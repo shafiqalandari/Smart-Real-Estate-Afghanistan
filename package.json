@@ -1,0 +1,37 @@
+{
+  "name": "smart-real-estate-afghanistan",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-full.cjs",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.js",
+    "start:api": "node server/index.js",
+    "db:migrate": "node server/db/migrate.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "4.2.1",
+    "lucide-react": "0.263.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.43",
+    "@types/react-dom": "18.2.17",
+    "autoprefixer": "10.4.16",
+    "postcss": "8.4.32",
+    "tailwindcss": "3.3.6",
+    "typescript": "5.2.2",
+    "vite": "4.5.2"
+  }
+}

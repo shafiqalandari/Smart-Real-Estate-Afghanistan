@@ -1,0 +1,3 @@
+import { ResourcePage, badge, dateText, pretty } from './shared'
+import { endpoints } from '../adminApi'
+export default function PaymentHistoryPage(){return <ResourcePage<any> title="Payments" sub="Approved, pending and refunded billing records." path={endpoints.payments} columns={[{key:'customer',title:'Customer',render:r=>pretty(r.customerName||r.businessName)},{key:'amount',title:'Amount',render:r=>`${Number(r.amount||0).toLocaleString()} ${r.currency||'AFN'}`},{key:'status',title:'Status',render:r=>badge(r.status)},{key:'date',title:'Date',render:r=>dateText(r.createdAt||r.created_at)}]}/>} 

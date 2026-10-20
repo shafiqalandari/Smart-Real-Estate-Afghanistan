@@ -1,0 +1,56 @@
+/* Adapted from the provided Rental project's calendar components */
+/* Shared Gregorian/Jalali date picker */
+.market-date-picker{position:relative;min-width:0;width:100%}.market-date-trigger{width:100%;min-height:39px;border:1px solid var(--border,#334155);border-radius:9px;background:var(--surface,#171d2a);color:inherit;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;cursor:pointer;font:inherit;text-align:start}.market-date-trigger:hover{border-color:#647cff}.market-date-required{position:absolute;pointer-events:none;opacity:0;width:1px;height:1px}.market-calendar{position:absolute;z-index:10010;top:calc(100% + 7px);inset-inline-start:0;width:min(326px,calc(100vw - 38px));border:1px solid #40506b;border-radius:16px;background:#172133;color:#f6f8ff;padding:14px;box-shadow:0 18px 55px #0009;font-size:13px}.market-calendar-top,.market-calendar-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}.market-calendar-top button,.market-calendar-actions button{border:1px solid #374860;background:#243149;color:#fff;border-radius:8px;padding:7px 12px;cursor:pointer}.market-calendar-grid{margin-top:12px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.market-calendar-weekday{text-align:center;color:#a9b8d3;font-size:11px;padding:7px 0}.market-calendar-grid button,.market-calendar-months button{border:0;background:transparent;color:#e8efff;border-radius:8px;cursor:pointer;min-height:35px}.market-calendar-grid button:hover,.market-calendar-months button:hover{background:#32466a}.market-calendar-grid button.other-month{opacity:.42}.market-calendar-grid button.selected,.market-calendar-months button.selected{background:#3265ee;color:white}.market-calendar-actions{border-top:1px solid #34445e;margin-top:12px;padding-top:12px}.market-calendar-months{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:15px}.app-header .calendar-mode-switch{display:flex;align-items:center;gap:3px;border:1px solid #35425b;border-radius:10px;padding:3px;background:#172032}.calendar-mode-switch button{border:0;border-radius:7px;padding:7px 10px;background:transparent;color:#b9c6dd;white-space:nowrap}.calendar-mode-switch button.active{background:#3163dd;color:#fff}.formgrid label{min-width:0}@media(max-width:650px){.calendar-mode-switch button{padding:6px;font-size:11px}.market-calendar{max-width:calc(100vw - 38px)}}
+
+/* Calendar selection in the application header */
+.calendar-menu-root{position:relative;display:inline-flex;align-items:center;flex:none}
+.app-header .calendar-icon-trigger{display:inline-flex;align-items:center;justify-content:center;width:39px;height:39px;padding:0;border:1px solid var(--border,#374359);border-radius:10px;background:var(--surface,#171d2a);color:inherit;cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
+.app-header .calendar-icon-trigger:hover,.app-header .calendar-icon-trigger.is-open{border-color:#5886fb;background:color-mix(in srgb,var(--surface,#171d2a) 75%,#4779f5)}
+.app-header .calendar-icon-trigger:active{transform:scale(.94)}
+.app-header .calendar-icon-trigger:focus-visible,.calendar-menu-option:focus-visible{outline:2px solid #70a0ff;outline-offset:2px}
+.calendar-menu-popover{position:absolute;inset-inline-end:0;top:calc(100% + 9px);z-index:11020;width:230px;max-width:calc(100vw - 24px);padding:8px;background:var(--surface,#171d2a);color:inherit;border:1px solid var(--border,#374359);border-radius:14px;box-shadow:0 18px 55px #0007;animation:calendar-menu-enter .16s ease-out}
+.calendar-menu-heading{padding:9px 10px 10px;display:flex;flex-direction:column;gap:4px;border-bottom:1px solid var(--border,#374359);margin-bottom:5px}
+.calendar-menu-heading strong{font-size:13px}.calendar-menu-heading small{font-size:11px;opacity:.67}
+.calendar-menu-popover .calendar-menu-option{display:flex;align-items:center;gap:10px;width:100%;border:0;border-radius:9px;padding:11px 10px;color:inherit;background:transparent;text-align:start;font:inherit;font-size:13px;cursor:pointer;transition:background .15s}
+.calendar-menu-popover .calendar-menu-option:hover,.calendar-menu-popover .calendar-menu-option.selected{background:color-mix(in srgb,var(--surface,#171d2a) 65%,#4779f5)}
+.calendar-menu-radio{width:19px;height:19px;border-radius:50%;border:1px solid #7283a0;display:inline-flex;justify-content:center;align-items:center;flex:none;font-size:12px;color:#fff}
+.calendar-menu-option.selected .calendar-menu-radio{background:#3469e8;border-color:#3469e8}
+@keyframes calendar-menu-enter{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.calendar-menu-popover{animation:none}}
+
+/* Editable date field: both keyboard and calendar */
+.market-date-entry{width:100%;display:flex;align-items:stretch;min-height:39px;border:1px solid var(--border,#334155);border-radius:9px;background:var(--surface,#171d2a);overflow:hidden}
+.market-date-entry:focus-within{border-color:#647cff;box-shadow:0 0 0 1px #647cff55}
+.market-date-manual{flex:1;min-width:0;width:100%;border:0!important;outline:none!important;box-shadow:none!important;background:transparent!important;color:inherit!important;padding:8px 12px!important;font:inherit;text-align:start;direction:ltr}
+.market-date-calendar-button{flex:none;border:0!important;border-inline-start:1px solid #334155!important;background:transparent!important;color:inherit!important;padding:5px 12px!important;cursor:pointer}
+.market-date-calendar-button:hover{background:#32466a!important}
+.market-date-invalid{border-color:#f87171!important}.market-date-error{display:block;color:#fca5a5;font-size:11px;margin-top:4px}
+
+
+
+/* SafarPro property office: responsive, printable UI */
+.market-date-entry{background:var(--estate-input-bg,#fff);border-color:#cbd5e1;color:inherit}
+.dark .market-date-entry{--estate-input-bg:#111c30;border-color:#475569}
+.market-date-calendar-button{border-inline-start-color:#cbd5e1!important}
+.app-header .calendar-icon-trigger{background:#fff;border:1px solid #e2e8f0;color:#334155;height:44px;width:44px;border-radius:12px}
+.dark .app-header .calendar-icon-trigger{background:#1d293d;color:#f1f5f9;border-color:#374151}
+.calendar-menu-popover{background:#fff;color:#0f172a;border-color:#e2e8f0}
+.dark .calendar-menu-popover{background:#122137;color:#f1f5f9;border-color:#475569}
+.estate-modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#020617bd;padding:10px}
+.estate-modal{display:flex;flex-direction:column;min-height:0;width:min(760px,100%);max-height:calc(100dvh - 20px);overflow:hidden;border-radius:19px;background:#fff;color:#0f172a;box-shadow:0 25px 75px #02061765}
+.dark .estate-modal{background:#121d30;color:#f8fafc}
+.estate-modal-body{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:17px;scrollbar-width:none}
+.estate-modal-body::-webkit-scrollbar{display:none}
+.estate-modal-footer{flex:none;border-top:1px solid #64748b33;padding:12px 17px;background:inherit}
+.estate-settings-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.estate-settings-tabs button{border:1px solid #94a3b855;padding:10px 13px;border-radius:12px;font-size:12px;font-weight:700}
+.estate-settings-tabs button.active{background:#f59e0b;color:#0f172a;border-color:#f59e0b}
+.estate-settings-field{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;min-width:0}
+.estate-settings-field>input,.estate-settings-field>select,.estate-settings-field>textarea{min-height:41px;width:100%;border:1px solid #94a3b855;border-radius:10px;background:transparent;padding:9px 11px;color:inherit;outline-offset:2px}
+.estate-settings-field option{color:#111827}
+.estate-print-pattern{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.estate-print-pattern button{border:1px solid #64748b55;padding:9px;border-radius:10px;display:flex;align-items:center;gap:6px;font-size:12px}
+.estate-print-pattern button.active{outline:2px solid #f59e0b}
+.estate-settings-toggle{display:flex;align-items:center;gap:9px;font-size:12px}
+.estate-settings-toggle input{width:17px;height:17px;accent-color:#d97706}
+@media(max-width:640px){.estate-settings-grid{grid-template-columns:1fr!important}.estate-print-pattern{grid-template-columns:repeat(2,minmax(0,1fr))}.estate-modal-body{padding:12px}.print-overlay{padding:0}.print-workspace{height:100dvh}}

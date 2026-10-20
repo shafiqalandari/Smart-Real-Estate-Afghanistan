@@ -1,0 +1,3 @@
+import { ResourcePage, badge, dateText, pretty } from './shared'
+import { endpoints } from '../adminApi'
+export default function AuditPage(){return <ResourcePage<any> title="Audit Log" sub="Administrative actions and security history." path={endpoints.audit} columns={[{key:'action',title:'Action',render:r=><b>{pretty(r.action)}</b>},{key:'category',title:'Category',render:r=>badge(r.category)},{key:'admin',title:'Admin',render:r=>pretty(r.adminEmail||r.admin_email)},{key:'summary',title:'Summary',render:r=><span className="line-clamp-2 max-w-xl">{pretty(r.summary)}</span>},{key:'date',title:'Date',render:r=>dateText(r.createdAt||r.created_at)}]}/>} 

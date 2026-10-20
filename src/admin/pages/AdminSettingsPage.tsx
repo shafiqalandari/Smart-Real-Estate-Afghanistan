@@ -1,0 +1,10 @@
+import { useEffect, useState } from 'react'
+import { PageHeader } from './shared'
+import { adminGet, adminRequest } from '../adminApi'
+
+export default function AdminSettingsPage(){
+ const [days,setDays]=useState(7),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
+ useEffect(()=>{adminGet<{trialDays:number}>('/api/admin/trial-settings').then(v=>setDays(v.trialDays)).catch(e=>setError(e.message))},[])
+ const save=async()=>{if(!Number.isInteger(days)||days<1||days>365){setError('بین ۱ تا ۳۶۵ روز انتخاب کن.');return};setBusy(true);setError('');setMessage('');try{const result=await adminRequest<{trialDays:number}>('/api/admin/trial-settings',{method:'PUT',body:JSON.stringify({trialDays:days})});setDays(result.trialDays);setMessage('مدت آزمایشی مشتریان جدید ذخیره شد.')}catch(e:any){setError(e.message)}finally{setBusy(false)}}
+ return <><PageHeader title="تنظیمات ادمین" sub="تنظیم دسترسی آزمایشی حساب‌های تازه دفتر رهنمای معاملات"/><div className="max-w-xl rounded-2xl border border-slate-200 bg-white p-6" dir="rtl"><h2 className="text-lg font-bold">مدت دیموی پیش‌فرض مشتریان</h2><p className="mt-2 text-sm leading-7 text-slate-600">هر مشتری که خودش حساب بسازد یا توسط ادمین ثبت شود، از لحظه ساخت حساب به همین تعداد روز دسترسی آزمایشی می‌گیرد. پس از پایان، سرور دسترسی را متوقف می‌کند، مگر اینکه لایسنس فعال یا دسترسی دائمی داشته باشد. تغییر این تنظیم روی حساب‌های قبلی تأثیر ندارد.</p><label className="mt-5 block text-sm font-semibold">مدت آزمایشی (روز)<input type="number" min={1} max={365} value={days} onChange={e=>setDays(Number(e.target.value))} className="mt-2 block h-11 w-full rounded-xl border border-slate-300 px-3 text-base"/></label>{error&&<p className="mt-3 text-sm text-red-700">{error}</p>}{message&&<p className="mt-3 text-sm text-emerald-700">{message}</p>}<button disabled={busy} onClick={save} className="mt-5 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">{busy?'در حال ذخیره...':'ذخیره مدت دیمو'}</button></div></>
+}
