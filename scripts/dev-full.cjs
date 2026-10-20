@@ -29,6 +29,6 @@ function shutdown(code = 0) {
 process.on('SIGINT', () => shutdown(0))
 process.on('SIGTERM', () => shutdown(0))
 
-console.log('Starting Smart Real Estate API on :3001 and web app on :5173 ...')
+console.log('Starting Smart Real Estate API (port from .env, default 3021) and web app on :5173 ...')
 start('API', ['--watch', 'server/index.js'])
 start('Vite', [viteBin])

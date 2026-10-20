@@ -5202,7 +5202,7 @@ export default async function handler(req, res) {
   const route = routeFromRequest(req);
 
   if (!route || route === 'index' || route === 'health') {
-    return json(res, 200, { success: true, service: 'safarpro-central-api' });
+    return json(res, 200, { success: true, service: 'smart-real-estate-central-api' });
   }
 
   if (route === 'customer-auth/signup') return customerAccountSignUp(req, res);

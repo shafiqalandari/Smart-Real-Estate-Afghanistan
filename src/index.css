@@ -231,9 +231,9 @@ html[dir="rtl"] body,html[dir="rtl"] button,html[dir="rtl"] input,html[dir="rtl"
 body,.bg-page,.app-root{background:var(--theme-page)!important;color:var(--theme-text)!important}
 body{background-image:radial-gradient(circle at 12% 0%,var(--theme-glow),transparent 30%)!important}
 .app-header{background:color-mix(in srgb,var(--theme-surface) 90%,transparent)!important;border-color:var(--theme-line)!important}
-aside{background:var(--theme-sidebar)!important;color:var(--theme-sidebar-text)!important}
+aside:not(.estate-sidebar){background:var(--theme-sidebar)!important;color:var(--theme-sidebar-text)!important}
 aside nav button[class*="bg-amber-500"]{background:linear-gradient(135deg,var(--theme-primary),var(--theme-primary-2))!important;color:#fff!important}
-aside nav button:hover{background:color-mix(in srgb,var(--theme-primary) 16%,transparent)!important}
+aside:not(.estate-sidebar) nav button:hover{background:color-mix(in srgb,var(--theme-primary) 16%,transparent)!important}
 .app-panel,.modal-card,.settings-savebar,.header-menu{background:var(--theme-surface)!important;border-color:var(--theme-line)!important;color:var(--theme-text)!important;border-radius:var(--theme-radius)!important;box-shadow:var(--theme-shadow)!important}
 .metric-mini,.entity-card,.detail-item,.stat-cell,.permission-chip,.settings-action-box,.settings-info-box{background:var(--theme-surface-2)!important;border-color:var(--theme-line)!important}
 .app-btn-primary{background:linear-gradient(135deg,var(--theme-primary),var(--theme-primary-2))!important;border-color:transparent!important;color:#fff!important;box-shadow:0 10px 24px var(--theme-glow)!important;border-radius:var(--theme-control-radius)!important}
@@ -651,3 +651,38 @@ button,a,input,select,textarea{touch-action:manipulation}
   main{padding-left:max(12px,env(safe-area-inset-left))!important;padding-right:max(12px,env(safe-area-inset-right))!important}
   .app-root>aside{padding-bottom:env(safe-area-inset-bottom)!important}
 }
+
+
+/* Shared theme-aware navigation and bilingual typography */
+:root { --estate-side-bg:#ffffff; --estate-side-fg:#18283c; --estate-side-muted:#64748b; --estate-side-border:#e2e8f0; --estate-side-active:#e0f2fe; --estate-side-active-fg:#075985; --estate-side-hover:#f1f5f9; --estate-side-logo:#fbbf24; }
+[data-theme="ocean"] { --estate-side-bg:#eaf4ff; --estate-side-active:#bfdbfe; --estate-side-active-fg:#1d4ed8; --estate-side-logo:#38bdf8; }
+[data-theme="emerald"] { --estate-side-bg:#ecfdf5; --estate-side-active:#bbf7d0; --estate-side-active-fg:#047857; --estate-side-logo:#34d399; }
+[data-theme="royal"] { --estate-side-bg:#faf5ff; --estate-side-active:#e9d5ff; --estate-side-active-fg:#6d28d9; --estate-side-logo:#a78bfa; }
+[data-theme="sunset"] { --estate-side-bg:#fff7ed; --estate-side-active:#fed7aa; --estate-side-active-fg:#9a3412; --estate-side-logo:#fb923c; }
+[data-theme="rose"] { --estate-side-bg:#fff1f2; --estate-side-active:#fecdd3; --estate-side-active-fg:#9f1239; --estate-side-logo:#fb7185; }
+[data-theme="sand"] { --estate-side-bg:#fffbeb; --estate-side-active:#fde68a; --estate-side-active-fg:#92400e; --estate-side-logo:#f59e0b; }
+[data-theme="graphite"] { --estate-side-bg:#111827; --estate-side-fg:#f8fafc; --estate-side-muted:#94a3b8; --estate-side-border:#334155; --estate-side-active:#334155; --estate-side-active-fg:#ffffff; --estate-side-hover:#263448; --estate-side-logo:#94a3b8; }
+[data-theme="midnight"] { --estate-side-bg:#07111f; --estate-side-fg:#e2e8f0; --estate-side-muted:#94a3b8; --estate-side-border:#243447; --estate-side-active:#164e63; --estate-side-active-fg:#ecfeff; --estate-side-hover:#162b3e; --estate-side-logo:#22d3ee; }
+[data-theme="neonGlass"] { --estate-side-bg:#120a20; --estate-side-fg:#f5f3ff; --estate-side-muted:#c4b5fd; --estate-side-border:#3b2352; --estate-side-active:#581c87; --estate-side-active-fg:#fff; --estate-side-hover:#241335; --estate-side-logo:#c026d3; }
+[data-theme="aurora"] { --estate-side-bg:#071a18; --estate-side-fg:#ecfeff; --estate-side-muted:#99f6e4; --estate-side-border:#1d413b; --estate-side-active:#115e59; --estate-side-active-fg:#fff; --estate-side-hover:#10332f; --estate-side-logo:#2dd4bf; }
+[data-theme="liquidGlass"] { --estate-side-bg:#071a2b; --estate-side-fg:#e0f2fe; --estate-side-muted:#7dd3fc; --estate-side-border:#1a455e; --estate-side-active:#075985; --estate-side-active-fg:#fff; --estate-side-hover:#103149; --estate-side-logo:#38bdf8; }
+.estate-sidebar{background:var(--estate-side-bg);color:var(--estate-side-fg);border-inline-end:1px solid var(--estate-side-border);box-shadow:5px 0 25px rgba(0,0,0,.045);}
+.estate-side-border{border-color:var(--estate-side-border)}
+.estate-side-muted{color:var(--estate-side-muted)}
+.estate-side-logo{background:var(--estate-side-logo);color:#0f172a}
+.estate-side-active{background:var(--estate-side-active);color:var(--estate-side-active-fg);box-shadow:0 3px 12px rgba(15,23,42,.07)}
+.estate-side-inactive{color:var(--estate-side-fg)}
+.estate-side-inactive:hover{background:var(--estate-side-hover)}
+html[lang="fa"] body,html[lang="ps"] body,html[lang="fa"] button,html[lang="ps"] button{font-family:"Vazirmatn",Tahoma,Arial,sans-serif}
+html[lang="en"] body,html[lang="en"] button{font-family:Inter,system-ui,"Vazirmatn",sans-serif}
+.estate-dashboard .estate-stat-card{text-align:start}
+
+/* Sidebar tokens take precedence over generic page theme rules. */
+html body .estate-sidebar { background:var(--estate-side-bg)!important; color:var(--estate-side-fg)!important; }
+html body .estate-sidebar .estate-side-inactive { color:var(--estate-side-fg)!important; background:transparent; }
+html body .estate-sidebar .estate-side-inactive:hover,
+html body .estate-sidebar .estate-side-inactive:focus-visible { background:var(--estate-side-hover)!important; color:var(--estate-side-fg)!important; }
+html body .estate-sidebar .estate-side-active,
+html body .estate-sidebar .estate-side-active:hover { background:var(--estate-side-active)!important; color:var(--estate-side-active-fg)!important; }
+html body .estate-sidebar .estate-side-muted { color:var(--estate-side-muted)!important; }
+html body .estate-sidebar .estate-side-border { border-color:var(--estate-side-border)!important; }

@@ -17,7 +17,7 @@ npm run dev
 
 Frontend: `http://localhost:5173`
 Admin: `http://localhost:5173/admin/login`
-API health: `http://127.0.0.1:3001/api/health/postgres`
+API health: `http://127.0.0.1:3021/api/health/postgres`
 
 ## Production architecture
 
@@ -44,8 +44,8 @@ ADMIN_PASSWORD=CHANGE_TO_A_STRONG_PASSWORD
 ADMIN_SESSION_SECRET=CHANGE_TO_A_LONG_RANDOM_SECRET
 PGHOST=127.0.0.1
 PGPORT=5432
-PGDATABASE=safarpro
-PGUSER=safarpro_user
+PGDATABASE=smart_real_estate
+PGUSER=real_estate_user
 PGPASSWORD=CHANGE_ME
 FRONTEND_ORIGINS=https://safarpro.vercel.app,https://app.yourdomain.com
 ```
@@ -69,7 +69,7 @@ pm2 start server/index.js --name safarpro-api
 pm2 save
 ```
 
-Nginx should proxy the API domain to `127.0.0.1:3001` and HTTPS should be enabled.
+Nginx should proxy the API domain to `127.0.0.1:3021` and HTTPS should be enabled.
 
 ## Admin control included
 

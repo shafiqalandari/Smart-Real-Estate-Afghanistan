@@ -83,6 +83,15 @@ function fingerprint() {
   return id
 }
 
+type ApiRequestError = Error & { status?: number; code?: string }
+
+function apiError(message: string, code: string, status?: number): ApiRequestError {
+  const error = new Error(message) as ApiRequestError
+  error.code = code
+  if (typeof status === 'number') error.status = status
+  return error
+}
+
 async function request(path: string, options: RequestInit = {}, timeoutMs = 8000) {
   const token = localStorage.getItem(tokenKey)
   const controller = new AbortController()
@@ -99,17 +108,32 @@ async function request(path: string, options: RequestInit = {}, timeoutMs = 8000
         ...(options.headers || {}),
       },
     })
-    const data = await response.json().catch(() => ({}))
+    const data = await response.json().catch(() => null)
     if (!response.ok) {
-      const error = new Error(data?.error || data?.message || `Request failed (${response.status})`) as Error & { status?: number; code?: string }
-      error.status = response.status
-      error.code = data?.code
+      if (response.status === 503) throw apiError('Database or server unavailable', 'API_DATABASE_UNAVAILABLE', 503)
+      if (!data || typeof data !== 'object') throw apiError('Cannot reach the configured API server', 'API_UNAVAILABLE', response.status)
+      const error = apiError(data.error || data.message || `Request failed (${response.status})`, data.code || 'API_REQUEST_FAILED', response.status)
       throw error
     }
+    if (!data || typeof data !== 'object') throw apiError('The API returned an unexpected response', 'UNEXPECTED_API')
     return data
+  } catch (error: any) {
+    if (error?.code) throw error
+    if (controller.signal.aborted || error?.name === 'AbortError') throw apiError('Request timed out', 'API_TIMEOUT')
+    if (error instanceof TypeError) throw apiError('API connection unavailable', 'API_UNAVAILABLE')
+    throw error
   } finally {
     window.clearTimeout(timeout)
   }
+}
+
+/** Check both the local API and its PostgreSQL connection before sending a create-account request. */
+export async function checkCustomerApiReady() {
+  const health = await request('/api/health', {}, 5500)
+  if (health?.success !== true) throw apiError('Unexpected API response', 'UNEXPECTED_API')
+  const db = await request('/api/health/postgres', {}, 9000)
+  if (db?.database !== 'connected') throw apiError('PostgreSQL is not connected', 'API_DATABASE_UNAVAILABLE')
+  return true
 }
 
 function isMobileBrowser() {
@@ -308,10 +332,11 @@ export function clearCustomerInstallationSession() {
 }
 
 export async function signUpCustomerAccount(profile: CustomerRegistrationProfile, password: string) {
+  await checkCustomerApiReady()
   const result = await request('/api/customer-auth/signup', {
     method: 'POST',
     body: JSON.stringify({ ...profile, password, ...devicePayload(), referralCode: currentReferralCode() }),
-  }, 15000)
+  }, 30000)
   if (!result?.installationToken) throw new Error('Central server did not return an installation token.')
   localStorage.setItem(tokenKey, result.installationToken)
   try { localStorage.removeItem(referralKey) } catch {}
@@ -321,10 +346,11 @@ export async function signUpCustomerAccount(profile: CustomerRegistrationProfile
 }
 
 export async function signInCustomerAccount(email: string, password: string) {
+  await checkCustomerApiReady()
   const result = await request('/api/customer-auth/signin', {
     method: 'POST',
     body: JSON.stringify({ email: email.trim().toLowerCase(), password, ...devicePayload() }),
-  }, 15000)
+  }, 30000)
   if (!result?.installationToken) throw new Error('Central server did not return an installation token.')
   localStorage.setItem(tokenKey, result.installationToken)
   const snapshot = result.installation as CustomerAccessSnapshot

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode, type FormEvent } from 'react'
-import { Building2, Eye, EyeOff, LogIn, RefreshCcw, ShieldAlert, UserPlus, Landmark, Handshake, BarChart3, Globe2, ShieldCheck } from 'lucide-react'
+import { Building2, Eye, EyeOff, LogIn, RefreshCcw, ShieldAlert, UserPlus, Landmark, FileText, BarChart3, Globe2, ShieldCheck } from 'lucide-react'
 import SimpleLoader from './SimpleLoader'
 import type { Language } from '../i18n'
 import { BRAND_NAME, BRAND_DARI, BRAND_PASHTO } from '../branding'
@@ -21,6 +21,28 @@ const languageNow = ():Language => {
   const v=localStorage.getItem('app-language') as Language|null
   return v==='English'||v==='پښتو'||v==='دری'?v:'دری'
 }
+function localizedAuthError(error: any, lang: Language): string {
+  const code = String(error?.code || '')
+  const messages: Record<string, [string,string,string]> = {
+    API_TIMEOUT: ['ارتباط با سرور طول کشید. اتصال API و دیتابیس را بررسی کنید و دوباره کوشش نمایید.', 'له سرور سره اړیکه ډېره وځنډېده. د API او ډیټابېس اتصال وګورئ.', 'The server took too long. Check that the API and database are running.'],
+    API_UNAVAILABLE: ['سرور برنامه در دسترس نیست. Backend را فعال کنید و پورت API را بررسی نمایید.', 'د پروګرام سرور شتون نه لري. Backend او د API پورت وګورئ.', 'The API is unavailable. Start the backend and check its port.'],
+    API_DATABASE_UNAVAILABLE: ['سرور وصل است، اما PostgreSQL آماده نیست. فایل .env، رمز دیتابیس و مایگریشن‌ها را بررسی کنید.', 'سرور وصل دی خو PostgreSQL تیار نه دی. د .env فایل، د ډیټابېس رمز او مایګرېشنونه وګورئ.', 'The API is running but PostgreSQL is unavailable. Check .env, the database password, and migrations.'],
+    ACCOUNT_SCHEMA_MISSING: ['جدول‌های ثبت حساب در دیتابیس ساخته نشده‌اند. مایگریشن را اجرا کنید.', 'د حساب جدولونه نشته. ډیټابېس مایګرېشن اجرا کړئ.', 'Account tables are missing. Run database migrations.'],
+    ACCOUNT_ALREADY_EXISTS: ['این ایمیل قبلاً ثبت شده است. از «ورود به حساب» استفاده کنید.', 'دا ایمیل مخکې ثبت شوی دی. د ننوتلو برخه وکاروئ.', 'This email is already registered. Sign in instead.'],
+    TRIAL_REVIEW_REQUIRED: ['ثبت دوره آزمایشی برای این شماره یا دستگاه نیاز به بررسی ادمین دارد.', 'د دې شمېرې یا وسیلې ازمایښتي حساب د ادمین تایید ته اړتیا لري.', 'The trial registration needs administrator review.'],
+    UNEXPECTED_API: ['پاسخ سرور نامعتبر است. اتصال Backend و پورت آن را بررسی کنید.', 'د سرور ځواب سم نه دی. Backend وګورئ.', 'Unexpected server response. Check the backend endpoint.'],
+  }
+  if (messages[code]) return messages[code][lang==='دری'?0:lang==='پښتو'?1:2]
+  if (lang==='دری' && /operation was aborted|aborterror/i.test(error?.message || '')) return messages.API_TIMEOUT[0]
+  if (lang==='پښتو' && /operation was aborted|aborterror/i.test(error?.message || '')) return messages.API_TIMEOUT[1]
+  return String(error?.message || (lang==='English'?'Please try again.':lang==='پښتو'?'بیا هڅه وکړئ.':'دوباره کوشش کنید.'))
+}
+
+const validPhone = (phone: string) => {
+  const digits = phone.replace(/\D/g, '')
+  return digits.length >= 9 && digits.length <= 13
+}
+
 const stateFrom=(a:CustomerAccessSnapshot|null):GateState => {
   if(!a) return 'auth'
   const s=String(a.accessStatus||'').toUpperCase()
@@ -46,10 +68,11 @@ function Auth({lang,onDone,onLanguageChange}:{lang:Language;onDone:(a:CustomerAc
   const em=(mode==='signin'?email:profile.email).trim().toLowerCase()
   if(!/^\S+@\S+\.\S+$/.test(em)||!password||(mode==='signup'&&(!profile.businessName.trim()||!profile.ownerName.trim()||!profile.phone.trim()))){setError(t.required);return}
   if(password.length<8){setError(t.short);return}
+  if(mode==='signup'&&!validPhone(profile.phone)){setError(lang==='English'?'Enter a complete phone number (e.g. 07XXXXXXXX).':lang==='پښتو'?'د تماس بشپړه شمېره ولیکئ، لکه 07XXXXXXXX.':'شماره تماس مکمل وارد کنید. مثال: 07XXXXXXXX');return}
   if(mode==='signup'&&password!==confirm){setError(t.mismatch);return}
   setBusy(true)
   try{const a=mode==='signup'?await signUpCustomerAccount({...profile,email:em},password):await signInCustomerAccount(em,password);onDone(a)}
-  catch(e:any){setError(e?.message||t.retry)}finally{setBusy(false)}
+  catch(e:any){setError(localizedAuthError(e,lang))}finally{setBusy(false)}
  }
  return <main className="estate-login" dir={rtl?'rtl':'ltr'}>
   <div className="estate-login-glow estate-login-glow-one"/><div className="estate-login-glow estate-login-glow-two"/>
@@ -58,7 +81,7 @@ function Auth({lang,onDone,onLanguageChange}:{lang:Language;onDone:(a:CustomerAc
     <div className="estate-login-brand"><span className="estate-login-brand-mark"><Building2 size={25}/></span><span>{BRAND_NAME}</span></div>
     <p className="estate-login-eyebrow">{t.eyebrow}</p>
     <h1>{t.intro}</h1><p className="estate-login-desc">{t.desc}</p>
-    <div className="estate-login-feature-grid"><span><Landmark size={18}/>{t.feature1}</span><span><Handshake size={18}/>{t.feature2}</span><span><BarChart3 size={18}/>{t.feature3}</span></div>
+    <div className="estate-login-feature-grid"><span><Landmark size={18}/>{t.feature1}</span><span><FileText size={18}/>{t.feature2}</span><span><BarChart3 size={18}/>{t.feature3}</span></div>
     <div className="estate-login-illustration" aria-hidden="true"><div className="estate-login-illustration-ring"/><Building2 size={96} strokeWidth={1.2}/></div>
     <p className="estate-login-signature">{BRAND_NAME}</p>
    </section>
@@ -70,12 +93,12 @@ function Auth({lang,onDone,onLanguageChange}:{lang:Language;onDone:(a:CustomerAc
      <div className="estate-login-tabs"><button type="button" className={mode==='signin'?'active':''} onClick={()=>{setMode('signin');setError('')}}>{t.signin}</button><button type="button" className={mode==='signup'?'active':''} onClick={()=>{setMode('signup');setError('')}}>{t.signup}</button></div>
      {error&&<div role="alert" className="estate-login-error">{error}</div>}
      <div className="estate-login-fields">
-      {mode==='signup'&&<><label>{t.company}<input autoComplete="organization" value={profile.businessName} onChange={e=>setProfile(p=>({...p,businessName:e.target.value}))} required/></label><label>{t.owner}<input autoComplete="name" value={profile.ownerName} onChange={e=>setProfile(p=>({...p,ownerName:e.target.value}))} required/></label><label>{t.phone}<input autoComplete="tel" type="tel" value={profile.phone} onChange={e=>setProfile(p=>({...p,phone:e.target.value}))} required/></label></>}
-      <label>{t.email}<input type="email" autoComplete="email" value={mode==='signup'?profile.email:email} onChange={e=>mode==='signup'?setProfile(p=>({...p,email:e.target.value})):setEmail(e.target.value)} required/></label>
-      <label className="estate-login-wide">{t.password}<span className="estate-login-password"><input type={show?'text':'password'} autoComplete={mode==='signin'?'current-password':'new-password'} value={password} onChange={e=>setPassword(e.target.value)} required minLength={8}/><button type="button" onClick={()=>setShow(v=>!v)} aria-label={show?t.hide:t.show}>{show?<EyeOff size={19}/>:<Eye size={19}/>}</button></span></label>
-      {mode==='signup'&&<label className="estate-login-wide">{t.confirm}<input type="password" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} required minLength={8}/></label>}
+      {mode==='signup'&&<><label>{t.company}<input autoComplete="organization" value={profile.businessName} onChange={e=>setProfile(p=>({...p,businessName:e.target.value}))} required/></label><label>{t.owner}<input autoComplete="name" value={profile.ownerName} onChange={e=>setProfile(p=>({...p,ownerName:e.target.value}))} required/></label><label>{t.phone}<input autoComplete="tel" type="tel" inputMode="tel" placeholder="07XXXXXXXX" dir="ltr" value={profile.phone} onChange={e=>setProfile(p=>({...p,phone:e.target.value}))} required/></label></>}
+      <label>{t.email}<input type="email" dir="ltr" autoComplete="email" value={mode==='signup'?profile.email:email} onChange={e=>mode==='signup'?setProfile(p=>({...p,email:e.target.value})):setEmail(e.target.value)} required/></label>
+      <label className="estate-login-wide">{t.password}<span className="estate-login-password"><input type={show?'text':'password'} autoComplete={mode==='signin'?'current-password':'new-password'} dir="ltr" value={password} onChange={e=>setPassword(e.target.value)} required minLength={8}/><button type="button" onClick={()=>setShow(v=>!v)} aria-label={show?t.hide:t.show}>{show?<EyeOff size={19}/>:<Eye size={19}/>}</button></span></label>
+      {mode==='signup'&&<label className="estate-login-wide">{t.confirm}<input type="password" dir="ltr" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} required minLength={8}/></label>}
      </div>
-     <button type="submit" className="estate-login-submit" disabled={busy}>{busy?<RefreshCcw className="animate-spin" size={17}/>:mode==='signup'?<UserPlus size={18}/>:<LogIn size={18}/>} {mode==='signup'?t.create:t.login}</button>
+     <button type="submit" className="estate-login-submit" disabled={busy} aria-busy={busy}>{busy?<RefreshCcw className="animate-spin" size={17}/>:mode==='signup'?<UserPlus size={18}/>:<LogIn size={18}/>} {busy ? (lang==='English' ? 'Connecting...' : lang==='پښتو' ? 'مهرباني وکړئ انتظار وکړئ...' : 'در حال بررسی و اتصال...') : mode==='signup'?t.create:t.login}</button>
      <p className="estate-login-trust"><ShieldCheck size={15}/>{t.secure}</p>
     </form>
    </section>

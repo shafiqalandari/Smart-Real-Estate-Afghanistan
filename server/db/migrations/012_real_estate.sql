@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS re_records (
  updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS re_records_office_kind_idx ON re_records(office_id,kind,created_at DESC);
+CREATE INDEX IF NOT EXISTS re_records_office_kind_deleted_idx ON re_records(office_id,kind,deleted_at,created_at DESC);
 CREATE TABLE IF NOT EXISTS re_audit (
  id bigserial PRIMARY KEY, office_id text NOT NULL, record_id uuid,
  action text NOT NULL, detail jsonb DEFAULT '{}'::jsonb, at timestamptz DEFAULT now()

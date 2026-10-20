@@ -574,15 +574,44 @@ const estateRows:Trio[]=[
 {English:'Net office income','دری':'مفاد خالص دفتر','پښتو':'د دفتر خالصه ګټه'},
 ]
 
-const allRows=[...rows,...extraRows,...estateRows]
+const officeExtraRows:Trio[] = [
+{English:'Manage office records','دری':'مدیریت ریکاردهای دفتر','پښتو':'د دفتر ریکارډونو مدیریت'},
+{English:'Create, search and manage records.','دری':'معلومات را ثبت، جستجو و مدیریت کنید.','پښتو':'معلومات ثبت، ولټوئ او اداره کړئ.'},
+{English:'Office accounting','دری':'حسابداری دفتر','پښتو':'د دفتر حسابداري'},
+{English:'Property requests','دری':'درخواست جایداد','پښتو':'د ملکیت غوښتنې'},
+{English:'Customers','دری':'مشتریان','پښتو':'پېرودونکي'},
+{English:'Refresh','دری':'تازه\u200cسازی','پښتو':'تازه کول'},
+{English:'Office overview','دری':'نمای عمومی دفتر','پښتو':'د دفتر عمومي لید'},
+{English:'Real Estate Dashboard','دری':'داشبورد رهنمای معاملات','پښتو':'د معاملاتو ډشبورډ'},
+{English:'Quick access','دری':'دسترسی سریع','پښتو':'چټک لاسرسی'},
+{English:'System status','دری':'وضعیت سیستم','پښتو':'د سیستم حالت'},
+{English:'Add property','دری':'ثبت جایداد','پښتو':'ملکیت ثبتول'},
+{English:'Add customer','دری':'ثبت مشتری','پښتو':'پېرودونکی ثبتول'},
+{English:'Add deal','دری':'ثبت معامله','پښتو':'معامله ثبتول'},
+{English:'Available properties','دری':'جایدادهای موجود','پښتو':'شته ملکیتونه'},
+{English:'Closed properties','دری':'جایدادهای معامله\u200cشده','پښتو':'معامله شوي ملکیتونه'},
+{English:'All deals','دری':'تمام معاملات','پښتو':'ټولې معاملې'},
+{English:'Commission received','دری':'کمیشن دریافت\u200cشده','پښتو':'ترلاسه شوی کمېشن'},
+{English:'Outstanding commission','دری':'باقی\u200cمانده کمیشن','پښتو':'پاتې کمېشن'},
+{English:'Outstanding USD commission','دری':'کمیشن دالری باقی','پښتو':'پاتې ډالري کمېشن'},
+{English:'Ready','دری':'آماده استفاده','پښتو':'چمتو'},
+{English:'Add new','دری':'ثبت جدید','پښتو':'نوی ثبت'},
+{English:'Search records...','دری':'جستجو در ریکاردها...','پښتو':'ریکارډونه ولټوئ...'}
+]
+const allRows=[...rows,...extraRows,...estateRows,...officeExtraRows]
+const sortedRows=[...allRows].sort((a,b)=>Math.max(b.English.length,b['دری'].length,b['پښتو'].length)-Math.max(a.English.length,a['دری'].length,a['پښتو'].length))
+const translationCache=new Map<string,string>()
 
 export function translateText(input:string, lang:Language){
+ const cacheKey=input.length<=300?`${lang}\u0000${input}`:''
+ if(cacheKey&&translationCache.has(cacheKey))return translationCache.get(cacheKey) as string
  const text=input.trim(); if(!text)return input
+ const finish=(result:string)=>{if(cacheKey){if(translationCache.size>5000)translationCache.clear();translationCache.set(cacheKey,result)}return result}
  const exact=(value:string)=>value.replace(/\u200c/g,'‌').replace(/\s+/g,' ').trim()
  const norm=exact(text)
  for(const r of allRows){
    const variants=[r.English,r['دری'],r['پښتو']]
-   if(variants.some(v=>exact(v)===norm)) return input.replace(text,r[lang])
+   if(variants.some(v=>exact(v)===norm)) return finish(input.replace(text,r[lang]))
  }
  const aliases:{source:string;target:Trio}[]=[
    {source:'CRM و Leads',target:{English:'CRM & Leads','دری':'مدیریت مشتریان احتمالی','پښتو':'CRM او احتمالي پېرودونکي'}},
@@ -591,14 +620,13 @@ export function translateText(input:string, lang:Language){
    {source:'Invoice، Receipt و Footer',target:{English:'Invoice, Receipt & Footer','دری':'فاکتور، رسید و فوتر','پښتو':'انوایس، رسید او فوتر'}},
    {source:'CRM و Leads',target:{English:'CRM & Leads','دری':'مدیریت مشتریان احتمالی','پښتو':'CRM او احتمالي پېرودونکي'}},
  ]
- for(const a of aliases){if(exact(a.source)===norm)return input.replace(text,a.target[lang])}
+  for(const a of aliases){if(exact(a.source)===norm)return finish(input.replace(text,a.target[lang]))}
  const prefixes:[string,string,string][]=[['Full Information ','معلومات مکمل ','بشپړ معلومات '],['Delete ','حذف ','ړنګول '],['Due: ','موعد: ','وروستۍ نېټه: '],['Created ','ایجاد شد: ','جوړ شو: '],['Edited ','ویرایش شد: ','سمون وشو: '],['Changed ','تغییر کرد: ','بدل شو: '],['Uploaded ','آپلود شد: ','پورته شو: '],['Received ','دریافت شد: ','ترلاسه شو: '],['Converted ','تبدیل شد: ','بدل شو: '],['Search Results: ','نتایج جستجو: ','د لټون پایلې: ']]
- for(const p of prefixes){for(let i=0;i<3;i++){if(text.startsWith(p[i])){const tail=text.slice(p[i].length);const pre=lang==='English'?p[0]:lang==='دری'?p[1]:p[2];return input.replace(text,pre+tail)}}}
+  for(const p of prefixes){for(let i=0;i<3;i++){if(text.startsWith(p[i])){const tail=text.slice(p[i].length);const pre=lang==='English'?p[0]:lang==='دری'?p[1]:p[2];return finish(input.replace(text,pre+tail))}}}
  // Safe phrase translation for mixed static UI strings. Long phrases are replaced first.
  let out=text, changed=false
  const esc=(v:string)=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')
- const sorted=[...allRows].sort((a,b)=>Math.max(b.English.length,b['دری'].length,b['پښتو'].length)-Math.max(a.English.length,a['دری'].length,a['پښتو'].length))
- for(const r of sorted){
+  for(const r of sortedRows){
    const target=r[lang]
    for(const source of [r.English,r['دری'],r['پښتو']]){
      if(source===target||source.length<4)continue
@@ -609,9 +637,9 @@ export function translateText(input:string, lang:Language){
  }
  if(changed){
    if(lang==='English')out=out.replace(/،/g,',').replace(/\s+و\s+/g,' & ').replace(/\s{2,}/g,' ')
-   return input.replace(text,out)
+    return finish(input.replace(text,out))
  }
- return input
+  return finish(input)
 }
 
 export function currentLanguage():Language{return (localStorage.getItem('app-language') as Language)||'دری'}

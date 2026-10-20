@@ -13,8 +13,8 @@ function getPool() {
   pool = new Pool({
     host: process.env.PGHOST || '127.0.0.1',
     port: Number(process.env.PGPORT || 5432),
-    database: process.env.PGDATABASE || 'safarpro',
-    user: process.env.PGUSER || 'safarpro_user',
+    database: process.env.PGDATABASE || 'smart_real_estate',
+    user: process.env.PGUSER || 'real_estate_user',
     password: process.env.PGPASSWORD || '',
     max: Number(process.env.PGPOOL_MAX || 20),
     idleTimeoutMillis: 30_000,
