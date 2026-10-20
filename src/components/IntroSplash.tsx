@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Building2, MapPin, House } from 'lucide-react'
+import { Building2, MapPin, Home } from 'lucide-react'
 import type { Language } from '../i18n'
 
 type Props = {
@@ -64,12 +64,12 @@ export default function IntroSplash({ language, onDone }: Props) {
       <div className="travel-intro__route" aria-hidden="true">
         <span className="travel-intro__route-start"><MapPin size={17} /></span>
         <span className="travel-intro__route-line" />
-        <span className="travel-intro__plane"><House size={28} /></span>
+        <span className="travel-intro__plane"><Home size={28} /></span>
         <span className="travel-intro__route-end"><MapPin size={19} /></span>
       </div>
 
       <main className="travel-intro__content">
-        <div className="travel-intro__mark"><House size={28} /></div>
+        <div className="travel-intro__mark"><Home size={28} /></div>
         <div className="travel-intro__eyebrow">{text.eyebrow}</div>
         <h1>{text.title}</h1>
         <p>{text.subtitle}</p>

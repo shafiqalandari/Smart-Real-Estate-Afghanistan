@@ -36,7 +36,7 @@ export default function MarketDatePicker({value='',onChange,mode,lang,monthOnly=
  useEffect(()=>{if(!editing){setDraft(value?formatMarketDate(value,mode,lang,monthOnly):'');setInvalid(false)}},[value,mode,lang,monthOnly,editing]);
  const commit=()=>{const typed=draft.trim();if(!typed){onChange('');setInvalid(false);setEditing(false);return}const parsed=parseTypedDate(typed,mode,monthOnly);if(!parsed){setInvalid(true);return}onChange(parsed);setDraft(formatMarketDate(parsed,mode,lang,monthOnly));setInvalid(false);setEditing(false)};
  const first=toUTC(view.y,view.m,1,mode);const start=first?((first.getUTCDay()+1)%7):0;
- const cells=Array.from({length:42},(_,idx)=>{const date=first?new Date(first.getTime()+(idx-start)*dayMS):null;const parts=date?getParts(date,mode):null;return {date,parts,active:parts?.m===view.m&&parts.y===view.y}});
+ const cells=Array.from({length:42},(_,idx)=>{const date=first?new Date(first.getTime()+(idx-start)*dayMS):null;const parts=date?getParts(date,mode):null;return {date,parts,active:parts?.m===view.m&&parts?.y===view.y}});
  const move=(offset:number)=>{let m=view.m+offset,y=view.y;if(m<1){m=12;y--}if(m>12){m=1;y++}setView({y,m})};
  const choose=(date:Date)=>{const newValue=iso(date);const result=monthOnly?newValue.slice(0,7):newValue;onChange(result);setDraft(formatMarketDate(result,mode,lang,monthOnly));setEditing(false);setInvalid(false);setOpen(false)};
  const today=()=>choose(new Date());const isSelected=(date:Date)=>value&&(monthOnly?iso(date).slice(0,7)===String(value).slice(0,7):iso(date)===String(value).slice(0,10));

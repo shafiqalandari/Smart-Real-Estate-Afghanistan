@@ -9,7 +9,11 @@ function start(label, args) {
   const child = spawn(node, args, { stdio: 'inherit', env: process.env })
   child.on('exit', (code, signal) => {
     if (signal || code === 0) return
-    console.error(`${label} exited with code ${code}`)
+    console.error(`${label} stopped with code ${code}.`)
+    if (label === 'API') {
+      console.error('Frontend is still running. Check the database/API settings before signing in.')
+      return
+    }
     shutdown(code || 1)
   })
   children.push(child)
@@ -25,6 +29,6 @@ function shutdown(code = 0) {
 process.on('SIGINT', () => shutdown(0))
 process.on('SIGTERM', () => shutdown(0))
 
-console.log('Starting SafarPro API on :3001 and Vite on :5173 ...')
+console.log('Starting Smart Real Estate API on :3001 and web app on :5173 ...')
 start('API', ['--watch', 'server/index.js'])
 start('Vite', [viteBin])

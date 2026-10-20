@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { Archive, Banknote, Boxes, ClipboardList, Coins, LayoutDashboard, Package, Settings, ShieldCheck, Truck, User, Users, WalletCards, X, Menu, ChevronDown, MessageSquare, Building2, CreditCard } from 'lucide-react'
+import { Archive, Banknote, Boxes, ClipboardList, Coins, LayoutDashboard, Package, Settings, ShieldCheck, Truck, User, Users, Wallet as WalletCards, X, Menu, ChevronDown, MessageSquare, Building2, CreditCard } from 'lucide-react'
 import { BRAND_NAME, BRAND_DARI } from '../branding'
 import { signOut } from './adminApi'
 import { adminNavigate } from './adminAuth'

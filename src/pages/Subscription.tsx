@@ -1,6 +1,6 @@
 import { formatAppDate, formatAppDateTime } from '../utils/dateCalendar'
 import { useEffect, useMemo, useState } from 'react'
-import { Check, Clock3, RefreshCcw, WalletCards, Star, CalendarDays, Coins } from 'lucide-react'
+import { Check, Clock3, RefreshCcw, Wallet as WalletCards, Star, CalendarDays, Coins } from 'lucide-react'
 import type { Language } from '../i18n'
 import SimpleLoader from '../components/SimpleLoader'
 import CustomerIdBadge from '../components/CustomerIdBadge'
