@@ -1,10 +1,5 @@
 /** Always show a useful state even when a lazily loaded module cannot start. */
 const root = document.getElementById('root')
-// Apply saved appearance before React mounts to avoid a light-mode flash.
-const savedTheme = localStorage.getItem('app-theme') || 'midnight'
-const darkThemes = ['graphite', 'midnight', 'neonGlass', 'aurora', 'liquidGlass']
-document.documentElement.classList.toggle('dark', darkThemes.includes(savedTheme))
-document.documentElement.dataset.theme = savedTheme
 const localHost = ['localhost', '127.0.0.1', '0.0.0.0'].includes(location.hostname)
 
 function showFailure(reason: unknown): void {
@@ -20,7 +15,7 @@ function showFailure(reason: unknown): void {
   const card = document.createElement('section')
   Object.assign(card.style, {
     maxWidth: '560px', width: '100%', border: '1px solid #e2e8f0',
-    borderRadius: '20px', background: '#101d31', padding: '28px',
+    borderRadius: '24px', background: '#0f1b2f', padding: '28px',
     boxShadow: '0 15px 40px rgba(15,23,42,.06)'
   })
   const title = document.createElement('h1')
@@ -31,7 +26,7 @@ function showFailure(reason: unknown): void {
   help.style.lineHeight = '1.9'
   const detail = document.createElement('pre')
   detail.textContent = localHost ? String(reason instanceof Error ? `${reason.name}: ${reason.message}` : reason) : 'خطای بارگذاری برنامه'
-  Object.assign(detail.style, {fontSize: '12px', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap', background: '#1a2b44', padding: '12px', borderRadius: '10px', direction: 'ltr', textAlign: 'left'})
+  Object.assign(detail.style, {fontSize: '12px', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap', background: '#132540', padding: '12px', borderRadius: '10px', direction: 'ltr', textAlign: 'left'})
   const reload = document.createElement('button')
   reload.type = 'button'
   reload.textContent = 'تلاش دوباره'
@@ -44,7 +39,7 @@ function showFailure(reason: unknown): void {
 
 if (root) {
   root.setAttribute('aria-busy', 'true')
-  root.innerHTML = '<div data-estate-bootstrap="1" dir="rtl" style="min-height:100vh;display:grid;place-items:center;background:#08111f;color:#e2e8f0;font-family:Vazirmatn,Tahoma,sans-serif"><div>در حال بارگذاری سیستم رهنمای معاملات...</div></div>'
+  root.innerHTML = '<div data-estate-bootstrap="1" dir="rtl" style="min-height:100vh;display:grid;place-items:center;background:#08111f;color:#e2e8f0;font-family:Vazirmatn,Tahoma,sans-serif"><div style="text-align:center"><div style="font-size:14px;font-weight:800;color:#fbbf24;letter-spacing:.08em;margin-bottom:12px">SMART REAL ESTATE AFGHANISTAN</div><div style="font-size:16px">در حال بارگذاری سیستم رهنمای معاملات...</div></div></div>'
 }
 
 window.addEventListener('unhandledrejection', e => {

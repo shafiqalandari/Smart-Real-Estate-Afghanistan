@@ -120,7 +120,7 @@ export default function EstateAccessGate({children}:{children:ReactNode}){
   setLang(languageNow());if(!hasInstallationToken()){setState('auth');setAccess(null);return}
   if(!silent)setState('loading')
   try{const a=await syncCustomerAccess();setAccess(a);setState(stateFrom(a))}
-  catch(e:any){if(e?.status===401){clearCustomerInstallationSession();setState('auth');return}const d=getOfflineAccessDecision();if(d.allowed&&d.snapshot){setAccess(d.snapshot);setState(stateFrom(d.snapshot));return}setAccess(d.snapshot);setState(d.reason==='expired'?'expired':'offline')}
+  catch(e:any){if(e?.status===401){clearCustomerInstallationSession();setState('auth');return}const d=getOfflineAccessDecision();if(d.allowed&&d.snapshot){setAccess(d.snapshot);setState(stateFrom(d.snapshot));return}if(navigator.onLine){clearCustomerInstallationSession();setAccess(null);setState('auth');return}setAccess(d.snapshot);setState(d.reason==='expired'?'expired':'offline')}
  }
  useEffect(()=>{if(!enabled)return;void check();const f=()=>document.visibilityState==='visible'&&void check(true);const i=window.setInterval(f,30000);window.addEventListener('focus',f);window.addEventListener('online',f);return()=>{clearInterval(i);window.removeEventListener('focus',f);window.removeEventListener('online',f)}},[enabled])
  const updateLanguage=(v:Language)=>{setLang(v);localStorage.setItem('app-language',v);document.documentElement.lang=v==='English'?'en':v==='پښتو'?'ps':'fa';document.documentElement.dir=v==='English'?'ltr':'rtl';window.dispatchEvent(new CustomEvent('app-language-change'))}

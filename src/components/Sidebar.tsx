@@ -1,15 +1,29 @@
-import { Home, Settings, Trash2, Building2, Users, FileText, Wallet, BarChart3, CircleDollarSign, Receipt, ClipboardList, Percent, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, Settings, Trash2, Building2, Users, FileText, Wallet, BarChart3, Coins, Receipt, ClipboardList, Percent, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Language } from '../i18n'
 import { BRAND_NAME, BRAND_DARI, BRAND_PASHTO } from '../branding'
-export const items = [[Home,'Dashboard','dashboard'],[Building2,'Properties','properties'],[Users,'Customers','persons'],[FileText,'Deals','deals'],[Wallet,'Accounting','accounting'],[Wallet,'Receipts','payments'],[CircleDollarSign,'Income','income'],[Receipt,'Expenses','expenses'],[ClipboardList,'Requests','requests'],[Percent,'Commission Rates','rules'],[BarChart3,'Reports','reports'],[Trash2,'Recycle Bin','recycle'],[Settings,'Settings','settings']] as const
+export const items = [
+ [Home,'Dashboard','dashboard'],
+ [Building2,'Properties','properties'],
+ [Users,'Customers','persons'],
+ [FileText,'Deals','deals'],
+ [Wallet,'Commission receipts','payments'],
+ [Coins,'Income','income'],
+ [Receipt,'Expenses','expenses'],
+ [ClipboardList,'Property requests','requests'],
+ [Percent,'Commission rules','rules'],
+ [BarChart3,'Reports','reports'],
+ [Trash2,'Recycle Bin','recycle'],
+ [Settings,'Settings','settings'],
+] as const
 export type Page = (typeof items)[number][2]
 type Props={activePage:Page;collapsed:boolean;isOpen:boolean;isRtl:boolean;language:Language;onClose:()=>void;onToggleCollapse:()=>void;onNavigate:(page:Page)=>void}
 const names:Record<Language,Record<Page,string>>={
- 'دری':{dashboard:'داشبورد',properties:'جایدادها',persons:'مشتریان',deals:'معاملات',accounting:'حسابداری',reports:'گزارش‌ها',recycle:'سطل زباله',settings:'تنظیمات',payments:'دریافت کمیشن',income:'عواید',expenses:'مصارف',requests:'درخواست جایداد',rules:'نرخ کمیشن'},
- 'پښتو':{dashboard:'ډشبورډ',properties:'ملکیتونه',persons:'پېرودونکي',deals:'معاملې',accounting:'حسابداري',reports:'راپورونه',recycle:'کثافات',settings:'تنظیمات',payments:'کمېشن ترلاسه کول',income:'عواید',expenses:'لګښتونه',requests:'د ملکیت غوښتنې',rules:'د کمېشن نرخ'},
- 'English':{dashboard:'Dashboard',properties:'Properties',persons:'Customers',deals:'Deals',accounting:'Accounting',reports:'Reports',recycle:'Recycle Bin',settings:'Settings',payments:'Commission receipts',income:'Income',expenses:'Expenses',requests:'Property requests',rules:'Commission rates'}
+ 'دری':{dashboard:'داشبورد',properties:'جایدادها',persons:'مشتریان',deals:'معاملات',payments:'دریافت کمیشن',income:'عواید',expenses:'مصارف',requests:'درخواست جایداد',rules:'نرخ کمیشن',reports:'گزارش‌ها',recycle:'سطل زباله',settings:'تنظیمات'},
+ 'پښتو':{dashboard:'ډشبورډ',properties:'ملکیتونه',persons:'پېرودونکي',deals:'معاملې',payments:'د کمېشن ترلاسه کول',income:'عواید',expenses:'مصارف',requests:'د ملکیت غوښتنې',rules:'د کمېشن نرخ',reports:'راپورونه',recycle:'کثافات',settings:'تنظیمات'},
+ 'English':{dashboard:'Dashboard',properties:'Properties',persons:'Customers',deals:'Deals',payments:'Commission receipts',income:'Income',expenses:'Expenses',requests:'Property requests',rules:'Commission rules',reports:'Reports',recycle:'Recycle Bin',settings:'Settings'}
 }
+
 export default function Sidebar({activePage,collapsed,isOpen,isRtl,language,onClose,onToggleCollapse,onNavigate}:Props){
  const [logo,setLogo]=useState(()=>{try{return JSON.parse(localStorage.getItem('settings')||'{}')?.logo||''}catch{return ''}})
  useEffect(()=>{const load=()=>{try{setLogo(JSON.parse(localStorage.getItem('settings')||'{}')?.logo||'')}catch{setLogo('')}};window.addEventListener('app-settings-updated',load);return()=>window.removeEventListener('app-settings-updated',load)},[])
