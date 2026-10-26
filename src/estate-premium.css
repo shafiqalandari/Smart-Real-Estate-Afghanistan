@@ -73,3 +73,19 @@ html:not(.dark) .market-calendar-actions {border-color:#e2e8f0!important;}
 .estate-row-index{width:44px;text-align:center!important;font-variant-numeric:tabular-nums;opacity:.72}.estate-table-primary{font-weight:800;min-width:160px;max-width:265px}.estate-table-avatar{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#fff2de;color:#a86106;margin-inline-end:10px;vertical-align:middle}.estate-table-main-label{vertical-align:middle;display:inline-block;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.estate-table-cell-value{display:inline-block;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}.estate-table-actions-head{min-width:170px}.estate-table-actions{display:flex;align-items:center;gap:5px;white-space:nowrap}.estate-table-actions button{font:inherit;font-weight:750;font-size:11px;padding:7px 10px;border:1px solid var(--border,#dce5ee);border-radius:9px;background:var(--card,#fff);color:var(--foreground,#24304a);cursor:pointer}.estate-table-actions button:hover{background:var(--accent,#e7f0ff)}.estate-table-actions .estate-table-delete{color:#e11d48}.estate-table-shell .estate-empty{padding:40px 15px}
 .dark .estate-table-shell{background:#15233a;border-color:#33445b}.dark .estate-data-table th{background:#1d2c45;color:#eff5ff;border-color:#33445b}.dark .estate-data-table td{color:#eef4ff;border-color:#2e3d54}.dark .estate-data-table tbody tr:hover{background:#1d2e49}.dark .estate-table-actions button{background:#22344f;color:#f4f8ff;border-color:#44546d}.dark .estate-table-actions .estate-table-delete{color:#ff8b9e}.dark .estate-table-avatar{background:#453521;color:#f7c36d}
 @media(max-width:680px){.estate-table-shell{border-radius:13px}.estate-data-table th{padding:12px}.estate-data-table td{padding:9px 12px}.estate-table-shell:focus-visible{outline:2px solid #3b82f6}}
+
+/* FINAL: empty states match the active theme in every records table. */
+.estate-table-shell .estate-empty { background:#f8fafc; border-color:#cbd5e1; color:#475569; }
+.estate-table-shell .estate-empty strong { color:#22324b; }
+html.dark .estate-table-shell .estate-empty { background:#15253b !important; border:1px dashed #3a516c !important; color:#9fb3d0 !important; }
+html.dark .estate-table-shell .estate-empty strong { color:#f2f6ff !important; }
+html.dark .estate-table-shell .estate-empty span { color:#9fb3d0 !important; }
+html.dark .estate-table-shell .estate-empty svg { color:#fbbf24 !important; }
+/* Report empty tables, chart placeholders and read-only summary cards */
+html.dark .estate-dashboard .estate-stat-card::after { display:none !important; }
+html.dark .estate-data-table tbody td,html.dark .estate-table-shell { background-color:#112035; }
+html.dark .estate-data-table tbody tr:hover td { background-color:#192e49; }
+@media(max-width:680px){
+ .estate-table-shell{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .estate-table-shell .estate-empty{padding:24px 12px}
+}

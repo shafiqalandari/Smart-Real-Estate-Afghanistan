@@ -37,7 +37,7 @@ export default function IntroSplash({ language, onDone }: Props) {
   useEffect(() => {
     const leaveTimer = window.setTimeout(() => setLeaving(true), 2500)
     const doneTimer = window.setTimeout(() => {
-      sessionStorage.setItem('estate-intro-seen', '1')
+      sessionStorage.setItem('estate-intro-seen-v2', '1')
       onDone()
     }, 3050)
     return () => {

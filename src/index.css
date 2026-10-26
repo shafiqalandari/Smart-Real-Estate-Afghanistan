@@ -688,3 +688,10 @@ html body .estate-sidebar .estate-side-active,
 html body .estate-sidebar .estate-side-active:hover { background:var(--estate-side-active)!important; color:var(--estate-side-active-fg)!important; }
 html body .estate-sidebar .estate-side-muted { color:var(--estate-side-muted)!important; }
 html body .estate-sidebar .estate-side-border { border-color:var(--estate-side-border)!important; }
+
+/* Report card + empty state consistency, without affecting light mode */
+html.dark .estate-report-table,html.dark .estate-report-table table,html.dark .estate-report-table tbody { background-color:#112035 !important; color:#e2e8f0 !important; }
+html.dark .estate-report-table thead{background-color:#1c2e48 !important;color:#dbeafe !important}
+html.dark .estate-report-table tbody tr{border-color:#2c405d !important}
+html.dark .estate-report-table tbody td{background:transparent !important;color:#dbeafe !important}
+html.dark .estate-report-table tbody td.text-slate-500{color:#9eb1cc !important}
