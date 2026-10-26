@@ -98,3 +98,25 @@ html:not(.dark) .market-calendar-actions {border-color:#e2e8f0!important;}
 .estate-locked-action { display:inline-flex; align-items:center; padding:7px 10px; border:1px solid rgba(245,158,11,.27); border-radius:9px; background:rgba(245,158,11,.09); color:#b45309; font-size:11px; font-weight:800; white-space:normal; line-height:1.5; }
 .dark .estate-locked-action { color:#fbbf24; border-color:rgba(245,158,11,.3); }
 @media (max-width:640px) { .estate-table-actions { min-width:max-content; } .estate-locked-action { max-width:130px; } }
+
+/* Midnight: consistent, high-contrast surfaces and empty states across the office. */
+html.dark .estate-empty { background:#15243b!important; color:#b6c8df!important; border:1px dashed #435570!important; }
+html.dark .estate-empty strong {color:#eef7ff!important}
+html.dark .estate-table-shell,html.dark .estate-data-table {background:#111f35!important;color:#edf4ff!important}
+html.dark .estate-data-table thead th {background:#1b2c46!important;color:#edf5ff!important}
+html.dark .estate-data-table tbody td {background:transparent!important;color:#e8f2ff!important}
+html.dark .estate-records-page .rounded-xl.border,html.dark .estate-records-page .estate-list-meta {border-color:#334962!important;color:#b6c8e1!important}
+html.dark .estate-records-page input,html.dark .estate-records-page select {color-scheme:dark}
+html.dark .estate-records-page .estate-search-wrap input::placeholder {color:#90a7c4!important;opacity:1}
+html.dark .estate-modal {background:#12233a!important;color:#eff7ff!important}
+html.dark .estate-modal-header,html.dark .estate-modal-footer {border-color:#344960!important}
+html.dark .estate-cancel-btn {background:#1d304a!important;color:#e8f2ff!important}
+html.dark .estate-dashboard .estate-stat-card {background:#12233a!important;border-color:#2e4461!important}
+html.dark .estate-dashboard .estate-stat-card strong {color:#f5faff!important}
+.estate-accounting-link{min-height:100px;border:1px solid var(--theme-line,#dbe4f1);background:var(--theme-surface,#fff);color:var(--theme-text,#14243b);border-radius:18px;font-weight:800;padding:18px;text-align:center;transition:transform .15s,border-color .15s}
+.estate-accounting-link:hover{transform:translateY(-2px);border-color:var(--theme-accent,#0891b2)}
+.estate-accounting-link:focus-visible{outline:3px solid var(--theme-accent,#0891b2);outline-offset:3px}
+.estate-accounting-help{color:var(--theme-muted,#64748b);font-size:13px}
+@media(max-width:640px){.estate-accounting-link{min-height:72px}}
+
+.estate-money-module-note{padding:12px 16px;background:var(--theme-surface-2,#f0f7ff);border:1px solid var(--theme-line,#dbe4f1);color:var(--theme-text,#24344d);border-radius:13px;font-size:13px;line-height:1.9}

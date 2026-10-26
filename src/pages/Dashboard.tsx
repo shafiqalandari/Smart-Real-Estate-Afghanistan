@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Building2, CheckCircle2, FileText, Wallet, TrendingUp, Clock3, ArrowUpLeft, Plus, Users, RefreshCw, HandCoins, Receipt, ClipboardList, Home, Coins, DollarSign } from 'lucide-react'
+import { Building2, CheckCircle2, FileText, Wallet, TrendingUp, Clock3, ArrowUpLeft, Plus, Users, RefreshCw, Receipt, ClipboardList, Home, Coins, DollarSign } from 'lucide-react'
 import { allRecords, type RecordRow } from '../realEstate'
 import type { Page } from '../components/Sidebar'
 import type { Language } from '../i18n'
@@ -69,7 +69,7 @@ export default function Dashboard({language,onNavigate}:{language:Language;onNav
    {title:'درخواست‌های جایداد',value:fmt(requests.length),page:'requests',icon:ClipboardList,accent:'orange',hint:'بودجه درخواست‌های ثبت‌شده'},
    {title:'مجموع جایدادها',value:fmt(prop.length),page:'properties',icon:Home,accent:'blue',hint:'فهرست جایدادهای قابل معامله'},
    {title:'کمیشن دریافت‌شده (USD)',value:fmt(collected('USD'))+' USD',page:'payments',icon:DollarSign,accent:'green',hint:'جدا از حساب افغانی'},
-   {title:'عایدات دفتر (AFN)',value:fmt(sum('income','AFN'))+' AFN',page:'income',icon:HandCoins,accent:'green',hint:'دریافت‌های افغانی'},
+   {title:'عایدات دفتر (AFN)',value:fmt(sum('income','AFN'))+' AFN',page:'income',icon:Wallet,accent:'green',hint:'دریافت‌های افغانی'},
    {title:'مصارف دفتر (AFN)',value:fmt(sum('expenses','AFN'))+' AFN',page:'expenses',icon:Receipt,accent:'orange',hint:'جدا از حساب افغانی'},
    {title:'عایدات دفتر (USD)',value:fmt(sum('income','USD'))+' USD',page:'income',icon:Coins,accent:'green',hint:'جدا از حساب افغانی'},
    {title:'مصارف دفتر (USD)',value:fmt(sum('expenses','USD'))+' USD',page:'expenses',icon:Receipt,accent:'orange',hint:'جدا از حساب افغانی'},

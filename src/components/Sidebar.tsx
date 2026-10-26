@@ -1,8 +1,8 @@
-import { Home, Settings, Trash2, Building2, Users, FileText, Wallet, BarChart3, CircleDollarSign, Receipt, HandCoins, ClipboardList, Percent, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, Settings, Trash2, Building2, Users, FileText, Wallet, BarChart3, CircleDollarSign, Receipt, ClipboardList, Percent, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Language } from '../i18n'
 import { BRAND_NAME, BRAND_DARI, BRAND_PASHTO } from '../branding'
-export const items = [[Home,'Dashboard','dashboard'],[Building2,'Properties','properties'],[Users,'Customers','persons'],[FileText,'Deals','deals'],[Wallet,'Accounting','accounting'],[HandCoins,'Receipts','payments'],[CircleDollarSign,'Income','income'],[Receipt,'Expenses','expenses'],[ClipboardList,'Requests','requests'],[Percent,'Commission Rates','rules'],[BarChart3,'Reports','reports'],[Trash2,'Recycle Bin','recycle'],[Settings,'Settings','settings']] as const
+export const items = [[Home,'Dashboard','dashboard'],[Building2,'Properties','properties'],[Users,'Customers','persons'],[FileText,'Deals','deals'],[Wallet,'Accounting','accounting'],[Wallet,'Receipts','payments'],[CircleDollarSign,'Income','income'],[Receipt,'Expenses','expenses'],[ClipboardList,'Requests','requests'],[Percent,'Commission Rates','rules'],[BarChart3,'Reports','reports'],[Trash2,'Recycle Bin','recycle'],[Settings,'Settings','settings']] as const
 export type Page = (typeof items)[number][2]
 type Props={activePage:Page;collapsed:boolean;isOpen:boolean;isRtl:boolean;language:Language;onClose:()=>void;onToggleCollapse:()=>void;onNavigate:(page:Page)=>void}
 const names:Record<Language,Record<Page,string>>={
