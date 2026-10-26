@@ -2,14 +2,15 @@ import { useEffect,useMemo,useState } from 'react'
 import { FileSpreadsheet, Printer, RefreshCcw } from 'lucide-react'
 import { translateText, type Language } from '../i18n'
 import { allRecords, type Kind,type RecordRow } from '../realEstate'
-import { formatMoney,pageName,printEstate,printableValue } from '../estateFormat'
+import { formatMoney,pageName,printEstate,printableValue,fieldLabel,fieldDisplayValue } from '../estateFormat'
+import { fields } from '../realEstate'
 import { formatDate,getDateSystem,todayISO } from '../dateSystem'
 import MarketDatePicker from '../MarketDatePicker'
 import RealEstate from './RealEstate'
 const sections:Kind[]=['properties','deals','payments','expenses','income']
-const exportCSV=(kind:Kind,items:RecordRow[])=>{
+const exportCSV=(kind:Kind,items:RecordRow[],language:Language)=>{
  const keys=Array.from(new Set(items.flatMap(x=>Object.keys(x.payload))))
- const lines=[keys,...items.map(r=>keys.map(k=>printableValue(k,r.payload[k])))].map(c=>c.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n')
+ const lines=[keys.map(k=>fieldLabel(k,fields[kind].find(f=>f.key===k)?.label||k,language)),...items.map(r=>keys.map(k=>fieldDisplayValue(k,r.payload[k],language,!!fields[kind].find(f=>f.key===k)?.options)))].map(c=>c.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n')
  const blob=new Blob(['\ufeff'+lines],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob)
  const link=document.createElement('a');link.href=url;link.download=`real-estate-${kind}.csv`;link.click();setTimeout(()=>URL.revokeObjectURL(url),400)
 }
@@ -25,7 +26,7 @@ export default function Reports({language}:{language:Language}){
  const net=(c:string)=>rows.filter(r=>['payments','income','expenses'].includes(r.kind)&&r.payload.currency===c).filter(r=>{const d=String(r.payload.date||r.created_at||'').slice(0,10);return (!from||d>=from)&&(!to||d<=to)}).reduce((sum,r)=>sum+(r.kind==='expenses'?-1:1)*Number(r.payload.amount||0),0)
  const labels={دری:{title:'گزارش‌های دفتر',hint:'ریکاردها را بر اساس تاریخ فیلتر، چاپ یا به Excel انتقال دهید.',all:'همه تاریخ‌ها',today:'امروز',month:'ماه جاری'},پښتو:{title:'د دفتر راپورونه',hint:'ریکارډونه د نېټې له مخې فلټر، چاپ او CSV ته انتقال کړئ.',all:'ټولې نېټې',today:'نن',month:'دا میاشت'},English:{title:'Office reports',hint:'Filter records by date, print or export CSV for Excel.',all:'All dates',today:'Today',month:'This month'}}[language]
  const setRange=(v:'all'|'today'|'month')=>{const d=todayISO();if(v==='all'){setFrom('');setTo('')}else if(v==='today'){setFrom(d);setTo(d)}else{setFrom(d.slice(0,7)+'-01');setTo(d)}}
- return <div className="space-y-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-2xl font-black">{labels.title}</h1><p className="mt-1 text-sm text-slate-500">{labels.hint}</p></div><div className="flex gap-2"><button className="rounded-xl border px-3 py-2 text-sm" disabled={busy} onClick={refresh}><RefreshCcw size={16}/></button><button onClick={()=>printEstate(kind,language,filtered)} className="rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-black"><Printer size={16} className="inline"/>{t('چاپ / PDF')}</button><button onClick={()=>exportCSV(kind,filtered)} className="rounded-xl border px-4 py-2 text-sm font-bold"><FileSpreadsheet size={16} className="inline"/> Excel / CSV</button></div></div>
+ return <div className="space-y-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-2xl font-black">{labels.title}</h1><p className="mt-1 text-sm text-slate-500">{labels.hint}</p></div><div className="flex gap-2"><button className="rounded-xl border px-3 py-2 text-sm" disabled={busy} onClick={refresh}><RefreshCcw size={16}/></button><button onClick={()=>printEstate(kind,language,filtered)} className="rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-black"><Printer size={16} className="inline"/>{t('چاپ / PDF')}</button><button onClick={()=>exportCSV(kind,filtered,language)} className="rounded-xl border px-4 py-2 text-sm font-bold"><FileSpreadsheet size={16} className="inline"/> Excel / CSV</button></div></div>
  <div className="flex flex-wrap gap-2"><button onClick={()=>setShowRules(v=>!v)} className="rounded-xl border border-amber-500 px-4 py-2 text-sm">{t('تنظیم نرخ کمیشن')}</button>{sections.map(k=><button key={k} onClick={()=>setKind(k)} className={'rounded-xl border px-4 py-2 text-sm '+(k===kind?'border-amber-500 bg-amber-500 text-black':'')}>{pageName(k,language)}</button>)}</div>
  {showRules&&<div className="rounded-xl border border-amber-500 p-3"><RealEstate kind="rules" language={language}/></div>}
  <div className="grid gap-3 rounded-xl border bg-white p-4 dark:bg-slate-900 sm:grid-cols-3"><label className="text-xs">{t('از تاریخ')}<MarketDatePicker value={from} onChange={setFrom} mode={calendar==='Solar Hijri'?'jalali':'gregorian'} lang={language==='English'?'en':language==='پښتو'?'ps':'fa'}/></label><label className="text-xs">{t('تا تاریخ')}<MarketDatePicker value={to} onChange={setTo} mode={calendar==='Solar Hijri'?'jalali':'gregorian'} lang={language==='English'?'en':language==='پښتو'?'ps':'fa'}/></label><div className="flex items-end gap-1.5">{([['all',labels.all],['today',labels.today],['month',labels.month]] as const).map(([key,text])=><button className="rounded-lg border px-2 py-2 text-xs" onClick={()=>setRange(key)} key={key}>{text}</button>)}</div></div>
