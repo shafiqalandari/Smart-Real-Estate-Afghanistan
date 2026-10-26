@@ -8,7 +8,7 @@ import { loadPrintPrefs, savePrintPrefs, defaultPrintPrefs, type PrintPrefs, pri
 
 type Props={theme:ThemeName;onThemeChange:(v:ThemeName)=>void;language:Language;onLanguageChange:(v:Language)=>void}
 type Config={companyName:string;companyNameDari:string;companyNamePashto:string;logo:string;phone:string;address:string;licenseNumber:string;licenseExpiry:string;defaultCurrency:'AFN'|'USD';dateSystem:DateSystem;language:Language;theme:ThemeName;notifications:boolean}
-const initial:Config={companyName:'Smart Real Estate Afghanistan',companyNameDari:'سیستم رهنمای معاملات و کرایی',companyNamePashto:'د معاملاتو لارښود دفتر',logo:'',phone:'',address:'',licenseNumber:'',licenseExpiry:'',defaultCurrency:'AFN',dateSystem:'Gregorian',language:'دری',theme:'minimalism',notifications:true}
+const initial:Config={companyName:'Smart Real Estate Afghanistan',companyNameDari:'سیستم رهنمای معاملات و کرایی',companyNamePashto:'د معاملاتو لارښود دفتر',logo:'',phone:'',address:'',licenseNumber:'',licenseExpiry:'',defaultCurrency:'AFN',dateSystem:'Gregorian',language:'دری',theme:'midnight',notifications:true}
 export function loadOfficeConfig():Config{try{return {...initial,...JSON.parse(localStorage.getItem('settings')||'{}')} as Config}catch{return initial}}
 const names={
  'دری':{title:'تنظیمات دفتر',subtitle:'معلومات دفتر، چاپ اسناد، زبان، تاریخ و ظاهر سیستم را تنظیم کنید.',general:'معلومات دفتر',language:'زبان و ارز',appearance:'ظاهر و فونت',print:'چاپ و سربرگ',other:'عمومی',save:'ذخیره تنظیمات',saved:'تغییرات ذخیره شد',demo:'پیش‌نمایش چاپ',important:'تنظیمات ظاهری در این مرورگر ذخیره می‌شوند و جای بکاپ دیتابیس را نمی‌گیرند.'},

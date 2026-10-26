@@ -1,0 +1,31 @@
+SMART REAL ESTATE — CUMULATIVE UI UPDATE
+
+This ZIP contains ONLY changed source files relative to Smart-Real-Estate-Afghanistan.zip.
+Includes previous dashboard/sidebar/print/mobile changes AND new dark-first-launch/action-state fixes.
+Unzip into project root, preserving paths. Does not include .env, database files, or dependencies.
+
+Dark mode: first launch defaults to Midnight; previously saved app-theme preference is respected.
+Record operations: regular records use common create/edit/soft-delete/restore handlers. Deals and payments are intentionally immutable in backend to protect financial accounting; UI now explains this.
+
+VERIFICATION
+- Static source checks: pass (see notes below)
+- server/routes/real-estate.js: node --check passes (unchanged)
+- npm ci --offline: could not finish (missing yaml-2.9.1 package in local cache)
+- Production build, authenticated CRUD and mobile browser tests: NOT RUN here. Must be run before production deployment.
+
+SAFE UPDATE
+1. Commit/push changed files to your GitHub repository from your local project.
+2. In VPS, check: cd /var/www/smart-real-estate && git status -sb
+3. ONLY if clean: git pull --ff-only origin main
+4. npm ci --no-audit --no-fund && npm run build
+5. If build succeeded, reload page with Ctrl+Shift+R. Frontend-only: no PM2 restart needed.
+Do not run db:migrate for this UI update. Do not edit other projects.
+
+MANUAL ACCEPTANCE TESTS
+- First visit using clean browser profile opens in dark appearance; switching to light theme persists.
+- All record kinds open add form; safe kinds allow edit and recycle-bin deletion/restore.
+- Deals/payments show locked financial record actions; new deal/payment validates amounts and currency.
+- AFN and USD remain separate in widgets and print reports.
+- Test mobile 375x667 modal scroll, save button, table horizontal scroll, menus.
+- Test print preview: multi-page rows, RTL text, page breaks and chosen fonts.
+- Confirm admin account, signup, licensing and all APIs on test data.

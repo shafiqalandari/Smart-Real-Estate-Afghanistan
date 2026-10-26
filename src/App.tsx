@@ -20,7 +20,7 @@ export default function App(){
  const [clientTab,setClientTab]=useState<'persons'|'requests'>('persons')
  const [mobileSidebarOpen,setMobileSidebarOpen]=useState(false)
  const [sidebarCollapsed,setSidebarCollapsed]=useState(()=>localStorage.getItem('app-sidebar-collapsed')==='1')
- const [theme,setTheme]=useState<ThemeName>(()=>(localStorage.getItem('app-theme') as ThemeName)||'minimalism')
+ const [theme,setTheme]=useState<ThemeName>(()=>(localStorage.getItem('app-theme') as ThemeName)||'midnight')
  const [language,setLanguage]=useState<Language>(()=>(localStorage.getItem('app-language') as Language)||'دری')
  const [search,setSearch]=useState('')
  const isRtl=rtlLanguages.includes(language),isDark=isDarkTheme(theme)

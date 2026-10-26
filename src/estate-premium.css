@@ -73,3 +73,28 @@ html:not(.dark) .market-calendar-actions {border-color:#e2e8f0!important;}
 .estate-row-index{width:44px;text-align:center!important;font-variant-numeric:tabular-nums;opacity:.72}.estate-table-primary{font-weight:800;min-width:160px;max-width:265px}.estate-table-avatar{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#fff2de;color:#a86106;margin-inline-end:10px;vertical-align:middle}.estate-table-main-label{vertical-align:middle;display:inline-block;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.estate-table-cell-value{display:inline-block;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}.estate-table-actions-head{min-width:170px}.estate-table-actions{display:flex;align-items:center;gap:5px;white-space:nowrap}.estate-table-actions button{font:inherit;font-weight:750;font-size:11px;padding:7px 10px;border:1px solid var(--border,#dce5ee);border-radius:9px;background:var(--card,#fff);color:var(--foreground,#24304a);cursor:pointer}.estate-table-actions button:hover{background:var(--accent,#e7f0ff)}.estate-table-actions .estate-table-delete{color:#e11d48}.estate-table-shell .estate-empty{padding:40px 15px}
 .dark .estate-table-shell{background:#15233a;border-color:#33445b}.dark .estate-data-table th{background:#1d2c45;color:#eff5ff;border-color:#33445b}.dark .estate-data-table td{color:#eef4ff;border-color:#2e3d54}.dark .estate-data-table tbody tr:hover{background:#1d2e49}.dark .estate-table-actions button{background:#22344f;color:#f4f8ff;border-color:#44546d}.dark .estate-table-actions .estate-table-delete{color:#ff8b9e}.dark .estate-table-avatar{background:#453521;color:#f7c36d}
 @media(max-width:680px){.estate-table-shell{border-radius:13px}.estate-data-table th{padding:12px}.estate-data-table td{padding:9px 12px}.estate-table-shell:focus-visible{outline:2px solid #3b82f6}}
+
+/* Office dashboard and mobile refinements */
+.estate-dashboard{max-width:1680px;margin-inline:auto}
+.estate-dashboard .estate-page-hero{position:relative;overflow:hidden;border:1px solid #dfe9f7;border-radius:24px;padding:24px 28px;background:linear-gradient(115deg,#fff,#f0f6ff 65%,#fff2d7);box-shadow:0 8px 30px #102b5210}
+.estate-dashboard .estate-page-hero::before{content:"";position:absolute;inset:auto -75px -125px auto;width:260px;height:260px;border-radius:50%;border:1px solid #e1b45c65;pointer-events:none}
+.dark .estate-dashboard .estate-page-hero{background:linear-gradient(115deg,#182740,#14233c 62%,#302b36);border-color:#354660}
+.estate-quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.estate-stat-card{border-radius:19px;min-height:155px}
+.estate-stat-card:focus-visible,.estate-quick-grid button:focus-visible{outline:3px solid #e6a938;outline-offset:3px}
+.estate-table-shell{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.estate-data-table{min-width:780px}
+.estate-modal-overlay{overflow-y:auto;align-items:start;justify-items:center;overscroll-behavior:contain}
+.estate-modal{margin-block:auto;max-height:calc(100dvh - 32px)}
+.estate-modal form{min-height:0;overflow:hidden}
+.estate-modal-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:900px){.estate-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.estate-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.estate-stat-card{padding:12px;min-height:140px}.estate-stat-label{margin-top:8px;font-size:11px}.estate-stat-card strong{font-size:18px}.estate-stat-icon{width:36px;height:36px}.estate-dashboard .estate-page-hero{padding:18px}.estate-quick-grid{grid-template-columns:1fr 1fr;gap:8px}.estate-quick-grid button{padding:9px;gap:5px}.estate-modal-overlay{padding:8px}.estate-modal{max-height:calc(100dvh - 16px);border-radius:15px}.estate-modal-body{padding:14px}.estate-form-grid{grid-template-columns:1fr;gap:13px}.estate-modal-footer{padding:12px;flex-wrap:wrap}.estate-records-page .estate-page-hero{padding:14px}.estate-page-hero h1{font-size:21px}}
+@media(max-width:360px){.estate-stat-grid,.estate-quick-grid{grid-template-columns:1fr}}
+@media print{.estate-sidebar,.estate-page-hero button,.estate-quick-grid,.estate-refresh{display:none!important}.estate-stat-card{box-shadow:none!important;border:1px solid #cad5e3!important;break-inside:avoid;color:#111827!important}.estate-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+
+/* Unified record action states across desktop, tablet and mobile. */
+.estate-table-actions button:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+.estate-locked-action { display:inline-flex; align-items:center; padding:7px 10px; border:1px solid rgba(245,158,11,.27); border-radius:9px; background:rgba(245,158,11,.09); color:#b45309; font-size:11px; font-weight:800; white-space:normal; line-height:1.5; }
+.dark .estate-locked-action { color:#fbbf24; border-color:rgba(245,158,11,.3); }
+@media (max-width:640px) { .estate-table-actions { min-width:max-content; } .estate-locked-action { max-width:130px; } }
