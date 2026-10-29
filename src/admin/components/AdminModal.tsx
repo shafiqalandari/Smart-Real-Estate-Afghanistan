@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
 
@@ -15,7 +16,7 @@ type Props = {
 
 export default function AdminModal({open,title,children,confirmLabel='Confirm',cancelLabel='Cancel',busy=false,danger=false,onClose,onConfirm}:Props){
   if(!open) return null
-  return <div className="fixed inset-0 z-[120] grid place-items-center bg-slate-950/35 p-4" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose()}}>
+  return createPortal(<div className="fixed inset-0 z-[120] grid place-items-center bg-slate-950/35 p-4" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose()}}>
     <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white shadow-2xl">
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
         <h3 className="text-sm font-bold text-slate-900">{title}</h3>
@@ -27,5 +28,5 @@ export default function AdminModal({open,title,children,confirmLabel='Confirm',c
         {onConfirm&&<button type="button" disabled={busy} onClick={onConfirm} className={`h-9 rounded-lg px-4 text-xs font-bold text-white disabled:opacity-50 ${danger?'bg-red-600 hover:bg-red-700':'bg-slate-900 hover:bg-slate-800'}`}>{busy?'Working…':confirmLabel}</button>}
       </div>
     </div>
-  </div>
+  </div>,document.body)
 }
